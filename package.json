@@ -1,0 +1,30 @@
+{
+  "name": "node-dynamo-db",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www",
+    "create-db": "cd dynamodb && node createSqfTable.js && cd ..",
+    "delete-db": "cd dynamodb && node deleteSqfTable.js && cd ..",
+    "load-data": "cd dynamodb && node loadSqfData.js && cd ..",
+    "read-data": "cd dynamodb && node readDataTest.js && cd .."
+  },
+  "dependencies": {
+    "aws-sdk": "^2.384.0",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "ejs": "^2.6.1",
+    "express": "~4.16.0",
+    "fs": "0.0.1-security",
+    "http-errors": "~1.6.2",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.0",
+    "newman": "^4.3.1",
+    "node-uuid": "^1.4.8",
+    "nodemon": "^1.18.9",
+    "serve-favicon": "^2.5.0",
+    "sleep": "^5.2.3",
+    "uuid": "^3.3.2"
+  }
+}
