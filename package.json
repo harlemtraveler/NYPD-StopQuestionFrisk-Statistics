@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "nodemon app.js",
     "create-db": "cd dynamodb && node createSqfTable.js && cd ..",
     "delete-db": "cd dynamodb && node deleteSqfTable.js && cd ..",
     "load-data": "cd dynamodb && node loadSqfData.js && cd ..",

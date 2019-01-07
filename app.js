@@ -1,33 +1,42 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-const favicon = require('serve-favicon');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+// const favicon = require('serve-favicon');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const AWS = require('aws-sdk');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
-var app = express();
+// AWS Credentials
+const accessKeyId = require('./config/keys').accessKeyId;
+const secretAccessKey = require('./config/keys').secretAccessKey;
+
+const app = express();
+
+const PORT = process.env.PORT || 5000;
+
+const awsConfig = {
+  "region": "us-east-1",
+  "endpoint": "https://dynamodb.us-east-1.amazonaws.com",
+  "accessKeyId": accessKeyId
+};
 
 // AWS Configuration
-AWS.config.update({
-  // accessKeyId: "",
-  // secretAccessKey: "",
-  region: "us-east-1",
-  endpoint: "http://localhost:8000"
-});
+AWS.config.update(awsConfig);
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 // Path to scan all SQF records
 app.get('/frisks', (req, res) => {
-  const dbParams = require('./paramData').dbParams;
+  const dbParams = require('./dynamodb/paramData').dbParams;
   const params = dbParams;
 
   console.log("Scanning sqfDB table.");
   docClient.scan(params, onScan);
+
+  // const fetchAllByKey = () => {};
 
   function onScan(err, data) {
     if (err) {
@@ -47,11 +56,11 @@ app.get('/frisks', (req, res) => {
         `);
       });
 
-      if (typeof data.LastEvaluatedKey != "undefined") {
-        console.log("Scanning for more...");
-        params.ExclusiveStartKey = data.LastEvaluatedKey;
-        docClient.scan(params, onScan);
-      }
+      // if (typeof data.LastEvaluatedKey != "undefined") {
+      //   console.log("Scanning for more...");
+      //   params.ExclusiveStartKey = data.LastEvaluatedKey;
+      //   docClient.scan(params, onScan);
+      // }
     }
   }
 });
@@ -84,6 +93,10 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.listen(PORT, () => {
+  console.log(`[*] Server Listening on Port: ${PORT} 🚦`);
 });
 
 module.exports = app;

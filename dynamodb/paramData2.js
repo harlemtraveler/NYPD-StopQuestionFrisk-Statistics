@@ -2,7 +2,7 @@ const columnheads = require('./sqfDBColumnHeads').columnHeads;
 
 module.exports = {
   dbParams: {
-    TableName: "StopQuestionFriskDB",
+    TableName: "sqfDB",
     ProjectionExpression: columnheads,
     ExpressionAttributeNames: {
       "#STOP_FRISK_ID": "STOP_FRISK_ID",

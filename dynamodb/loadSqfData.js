@@ -1,10 +1,21 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 
-AWS.config.update({
-  region: "us-east-1",
-  endpoint: "http://localhost:8000"
-});
+// AWS Credentials
+const accessKeyId = require('../config/keys').accessKeyId;
+const secretAccessKey = require('../config/keys').secretAccessKey;
+
+const app = express();
+
+const PORT = process.env.PORT || 5000;
+
+const awsConfig = {
+  "region": "us-east-1",
+  "endpoint": "https://dynamodb.us-east-1.amazonaws.com",
+  "accessKeyId": accessKeyId
+};
+
+AWS.config.update(awsConfig);
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
